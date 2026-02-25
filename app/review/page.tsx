@@ -177,8 +177,8 @@ export default function ReviewPage() {
                   </div>
                 ) : (
                 <div className="flex flex-1 min-w-0">
-                  <div className="flex-1 p-6 min-w-0">
-                    <div className="max-w-4xl">
+                  <div className="flex-1 p-6 min-w-0 flex justify-center">
+                    <div className="max-w-4xl w-full mx-auto">
                   {taskStatus === "pending_review" && (
                     <>
                       <div
@@ -392,8 +392,8 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
           </div>
         </header>
         <div className="flex flex-1 min-w-0">
-          <div className="flex-1 p-6">
-        <div className="flex flex-col items-center py-12 text-center max-w-lg mx-auto">
+          <div className="flex-1 p-6 flex flex-col items-center min-w-0">
+        <div className="flex flex-col items-center py-12 text-center max-w-lg w-full">
           <div className="mb-4 flex justify-center" style={{ color: "#1070B7" }}>
             <img src="/images/teacup.svg" alt="" className="w-20 h-20 object-contain" aria-hidden />
           </div>
@@ -419,13 +419,13 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
         </div>
 
         <div
-          className="w-full max-w-2xl h-px shrink-0 my-6"
+          className="w-full max-w-2xl h-px shrink-0 my-6 mx-auto"
           style={{ backgroundColor: "#E5E7EB" }}
           aria-hidden
         />
 
         <div
-          className="rounded-lg border p-4 max-w-2xl"
+          className="rounded-lg border p-4 w-full max-w-2xl mx-auto"
           style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
         >
           <div className="flex gap-4">
@@ -502,8 +502,8 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
           </div>
         </header>
         <div className="flex flex-1 min-w-0">
-          <div className="flex-1 p-6">
-        <div className="flex flex-col items-center py-12 text-center max-w-lg mx-auto">
+          <div className="flex-1 p-6 flex flex-col items-center min-w-0">
+        <div className="flex flex-col items-center py-12 text-center max-w-lg w-full">
           <div className="mb-4 w-20 h-20 flex items-center justify-center">
             <img src="/images/party.svg" alt="" className="w-full h-full object-contain" aria-hidden />
           </div>
@@ -526,13 +526,13 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
         </div>
 
         <div
-          className="w-full max-w-2xl h-px shrink-0 my-6"
+          className="w-full max-w-2xl h-px shrink-0 my-6 mx-auto"
           style={{ backgroundColor: "#E5E7EB" }}
           aria-hidden
         />
 
         <div
-          className="rounded-lg border p-4 max-w-2xl"
+          className="rounded-lg border p-4 w-full max-w-2xl mx-auto"
           style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
         >
           <div className="flex gap-4">

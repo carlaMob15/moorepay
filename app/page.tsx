@@ -90,14 +90,17 @@ export default function HomePage() {
         </div>
 
         {taskRemoved && (
-          <div className="mb-6">
+          <div className="mb-6 p-4 rounded-lg border bg-white" style={{ borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
+            <p className="text-sm mb-2" style={{ color: "#6B7280" }}>
+              Demo complete. Restore the task to run the flow again without refreshing.
+            </p>
             <button
               type="button"
               onClick={resetDemo}
-              className="px-4 py-2 rounded text-sm font-medium border transition-colors hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-1"
-              style={{ backgroundColor: "#FFFFFF", borderColor: "#D1D5DB", color: "#374151" }}
+              className="px-4 py-2.5 rounded text-sm font-medium border transition-colors hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-1"
+              style={{ backgroundColor: "#1070B7", borderColor: "#1070B7", color: "#FFFFFF" }}
             >
-              Reset demo
+              Reset demo — restore task
             </button>
           </div>
         )}
