@@ -67,7 +67,7 @@ export default function HomePage() {
           <div className="flex gap-5 flex-nowrap pb-2 min-w-0">
             {taskRemoved ? (
               <div className="shrink-0 snap-start">
-                <PlaceholderCard />
+                <TaskCardGreyed />
               </div>
             ) : (
               <Link href="/review" className="block shrink-0 snap-start">
