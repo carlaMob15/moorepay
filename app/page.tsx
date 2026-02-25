@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTask } from "./context/TaskContext";
 
 export default function HomePage() {
-  const { taskRemoved } = useTask();
+  const { taskRemoved, resetDemo } = useTask();
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: "#1A1A1A" }}>
@@ -88,6 +88,19 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {taskRemoved && (
+          <div className="mb-6">
+            <button
+              type="button"
+              onClick={resetDemo}
+              className="px-4 py-2 rounded text-sm font-medium border transition-colors hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-1"
+              style={{ backgroundColor: "#FFFFFF", borderColor: "#D1D5DB", color: "#374151" }}
+            >
+              Reset demo
+            </button>
+          </div>
+        )}
 
         {/* Bar chart section */}
         <div

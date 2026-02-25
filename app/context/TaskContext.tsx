@@ -36,6 +36,7 @@ type TaskContextType = {
   setOverrideModalOpen: (open: boolean) => void;
   taskRemoved: boolean;
   setTaskRemoved: (removed: boolean) => void;
+  resetDemo: () => void;
 };
 
 const initialActivityLog: ActivityEntry[] = [
@@ -52,7 +53,7 @@ const initialActivityLog: ActivityEntry[] = [
     timestamp: "23/02/2026, 13:15",
     type: "automated_verification",
     title: "Automated verification completed",
-    description: "Data extraction completed. Confidence score: 85%",
+    description: "Data extraction completed. Confidence score: 75%",
     source: "Verification system",
   },
   {
@@ -95,6 +96,15 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     setShowToast(false);
   }, []);
 
+  const resetDemo = useCallback(() => {
+    setTaskRemoved(false);
+    setTaskStatus("pending_review");
+    setActivityLog(initialActivityLog);
+    setJustificationText("");
+    setOverrideModalOpen(false);
+    setShowToast(false);
+  }, []);
+
   return (
     <TaskContext.Provider
       value={{
@@ -114,6 +124,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
         setOverrideModalOpen,
         taskRemoved,
         setTaskRemoved,
+        resetDemo,
       }}
     >
       {children}

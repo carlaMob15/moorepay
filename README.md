@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Moorepay — Document verification review demo
 
-## Getting Started
+A prototype for reviewing flagged document verifications. When the system detects a mismatch (e.g. passport name vs HR record), a reviewer can **request a correction** from the employee or **override and approve** with a justification. Built with Next.js and in-memory state for a controlled demo.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Home** — You’ll see a task card: “Passport verification required” with confidence 75% (medium).
+2. **Open the task** — Click the card (or “Review document”) to go to the document review page.
+3. **Review** — See the flagged document, data comparison, and activity log. Choose one:
+   - **Request Correction** — Sends a request to the employee; you’ll see a short transition, then the “task pending” view with a “Return to task queue” button.
+   - **Override and Approve** — Open the modal, enter a justification, then “Override and Approve”. After a short transition, you’ll see the “Document approved” view.
+4. **Return** — Use “Return to task queue” to go back to the home page (the task is removed from the list).
+5. **Reset demo** — On the home page, if the task was removed, use **Reset demo** to restore the task and run the flow again without refreshing.
 
-## Learn More
+## Tech
 
-To learn more about Next.js, take a look at the following resources:
+- **Next.js** (App Router), **React**, **TypeScript**
+- **Context** for demo state (task status, activity log, toasts, modal)
+- Semantic HTML and visible focus for keyboard use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/page.tsx` — Home (task queue)
+- `app/review/page.tsx` — Document review, pending/completed views, modal, toast
+- `app/context/TaskContext.tsx` — Shared state and reset
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+You can deploy with [Vercel](https://vercel.com) or any Node host. No environment variables required for the demo.
