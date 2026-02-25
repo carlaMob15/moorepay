@@ -63,24 +63,27 @@ export default function HomePage() {
           Pending tasks
         </h2>
 
-        <div
-          className="mb-6 overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory"
-          style={{ width: "calc(300px * 2.5 + 20px * 2)" }}
-        >
+        <div className="mb-6 w-full overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory">
           <div className="flex gap-5 flex-nowrap pb-2 min-w-0">
             {taskRemoved ? (
-              <div className="flex-shrink-0 snap-start">
+              <div className="shrink-0 snap-start">
                 <PlaceholderCard />
               </div>
             ) : (
-              <Link href="/review" className="block flex-shrink-0 snap-start">
+              <Link href="/review" className="block shrink-0 snap-start">
                 <TaskCard />
               </Link>
             )}
-            <div className="flex-shrink-0 snap-start">
+            <div className="shrink-0 snap-start">
               <TaskCardGreyed />
             </div>
-            <div className="flex-shrink-0 snap-start">
+            <div className="shrink-0 snap-start">
+              <TaskCardGreyed />
+            </div>
+            <div className="shrink-0 snap-start">
+              <TaskCardGreyed />
+            </div>
+            <div className="shrink-0 snap-start">
               <TaskCardGreyed />
             </div>
           </div>
@@ -137,7 +140,7 @@ export default function HomePage() {
 function TaskCard() {
   return (
     <div
-      className="group w-[300px] rounded-lg border p-5 cursor-pointer transition-opacity duration-200 hover:opacity-90"
+      className="group w-[360px] min-w-[360px] rounded-lg border p-5 cursor-pointer transition-opacity duration-200 hover:opacity-90"
       style={{
         backgroundColor: "#FFFFFF",
         borderColor: "#E5E7EB",
@@ -145,7 +148,7 @@ function TaskCard() {
       }}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <img
             src="/images/warning.svg"
             alt=""
@@ -153,13 +156,13 @@ function TaskCard() {
             aria-hidden
             style={{ filter: "invert(48%) sepia(79%) saturate(2476%) hue-rotate(14deg)" }}
           />
-          <span className="font-semibold" style={{ color: "#1F2937", fontSize: "14px" }}>
+          <span className="font-semibold truncate" style={{ color: "#1F2937", fontSize: "14px" }}>
             Passport verification required
           </span>
         </div>
         <span
-          className="px-2 py-0.5 rounded text-xs font-medium border"
-          style={{ backgroundColor: "#FEF3C7", color: "#1F2937", borderColor: "#FCD34D" }}
+          className="px-2 py-0.5 rounded text-xs font-medium border shrink-0"
+          style={{ backgroundColor: "#FEF3C7", color: "#92400E", borderColor: "#FCD34D" }}
         >
           Mismatch
         </span>
@@ -168,11 +171,11 @@ function TaskCard() {
         Passport name does not match HR record
       </p>
       <div
-        className="flex justify-between items-center mb-3 px-3 py-2 rounded-md"
+        className="flex justify-between items-center gap-3 mb-3 px-3 py-2 rounded-md whitespace-nowrap"
         style={{ backgroundColor: "#F3F4F6", fontSize: "14px" }}
       >
-        <span className="font-semibold" style={{ color: "#1F2937" }}>Passport.pdf</span>
-        <span style={{ color: "#6B7280" }}>Uploaded 19 Feb 2026</span>
+        <span className="font-semibold truncate min-w-0" style={{ color: "#1F2937" }}>Passport.pdf</span>
+        <span className="shrink-0" style={{ color: "#6B7280" }}>Uploaded 19 Feb 2026</span>
       </div>
       <p className="text-sm mb-4 font-semibold" style={{ color: "#374151" }}>
         Confidence: <span style={{ color: "#D97706" }}>75% (medium)</span>
@@ -190,7 +193,7 @@ function TaskCard() {
 function TaskCardGreyed() {
   return (
     <div
-      className="w-[300px] rounded-lg border p-5"
+      className="w-[360px] min-w-[360px] rounded-lg border p-5"
       style={{
         backgroundColor: "#FFFFFF",
         borderColor: "#E5E7EB",
@@ -224,7 +227,7 @@ function TaskCardGreyed() {
 function PlaceholderCard() {
   return (
     <div
-      className="w-[300px] rounded-lg border p-5"
+      className="w-[360px] min-w-[360px] rounded-lg border p-5"
       style={{
         backgroundColor: "#FFFFFF",
         borderColor: "#E5E7EB",
