@@ -490,6 +490,8 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
 
 function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () => void }) {
   const { activityLog } = useTask();
+  const overrideEntry = activityLog.find((e) => e.type === "document_approved_override");
+  const reasonText = overrideEntry?.justification ?? "—";
   return (
     <>
       <div className="flex-1 flex flex-col min-h-0">
@@ -581,7 +583,7 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
               <div>
                 <p className="text-xs font-medium mb-0.5" style={{ color: "#6B7280" }}>Reason</p>
                 <p className="text-sm" style={{ color: "#1F2937" }}>
-                  Recent marriage. Passport reflects previous surname. Employee has confirmed name change documentation is in progress.
+                  {reasonText}
                 </p>
               </div>
             </div>
