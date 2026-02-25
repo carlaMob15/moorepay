@@ -238,12 +238,34 @@ export default function ReviewPage() {
                             </div>
                           </div>
                         </div>
-                        <hr className="my-4 border-0 h-px" style={{ backgroundColor: "#E5E7EB" }} />
+                        <div className="flex items-start gap-3 mt-4 pt-4" style={{ borderTop: "1px solid #E5E7EB" }}>
+                          <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded" style={{ backgroundColor: "#EFF6FF" }} aria-hidden>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                              <polyline points="14 2 14 8 20 8" />
+                              <line x1="16" y1="13" x2="8" y2="13" />
+                              <line x1="16" y1="17" x2="8" y2="17" />
+                              <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium mb-0.5" style={{ color: "#6B7280" }}>Note from employee</p>
+                            <p className="text-sm font-medium" style={{ color: "#1F2937" }}>
+                              I recently got married. My passport still shows my previous surname.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        className="rounded-lg border p-4 mt-4"
+                        style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
+                      >
                         <h3 className="text-base font-semibold mb-3" style={{ color: "#1F2937" }}>
                           Data comparison
                         </h3>
                         <div
-                          className="grid grid-cols-2 gap-6 py-2 mb-3 -mx-4 px-4 rounded"
+                          className="grid grid-cols-2 gap-6 py-2 mb-3 -mx-2 px-2 rounded"
                           style={{ backgroundColor: "#FEF3C7" }}
                         >
                           <div>
@@ -306,24 +328,21 @@ export default function ReviewPage() {
                           </div>
                         </div>
                         <hr className="my-4 border-0 h-px" style={{ backgroundColor: "#E5E7EB" }} />
-                        <h3 className="text-base font-semibold mb-2" style={{ color: "#1F2937" }}>
-                          Actions
-                        </h3>
                         <div className="flex gap-3">
-                        <button
-                          onClick={handleRequestCorrection}
-                          className="px-4 py-2 rounded border text-sm font-medium"
-                          style={{ backgroundColor: "#FFFFFF", borderColor: "#1070B7", color: "#1070B7" }}
-                        >
-                          Request Correction
-                        </button>
-                        <button
-                          onClick={() => setOverrideModalOpen(true)}
-                          className="px-4 py-2 rounded text-sm font-medium"
-                          style={{ backgroundColor: "#1070B7", color: "#FFFFFF" }}
-                        >
-                          Override and Approve
-                        </button>
+                          <button
+                            onClick={handleRequestCorrection}
+                            className="px-4 py-2 rounded border text-sm font-medium"
+                            style={{ backgroundColor: "#FFFFFF", borderColor: "#1070B7", color: "#1070B7" }}
+                          >
+                            Request Correction
+                          </button>
+                          <button
+                            onClick={() => setOverrideModalOpen(true)}
+                            className="px-4 py-2 rounded text-sm font-medium"
+                            style={{ backgroundColor: "#1070B7", color: "#FFFFFF" }}
+                          >
+                            Override and Approve
+                          </button>
                         </div>
                       </div>
                     </>
