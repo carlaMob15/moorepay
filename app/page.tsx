@@ -8,12 +8,6 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: "#1A1A1A" }}>
-      <header
-        className="flex items-center h-12 px-4"
-        style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF", fontSize: "14px" }}
-      >
-        Home
-      </header>
       <div className="flex flex-1">
       {/* Left sidebar */}
       <aside
@@ -65,67 +59,31 @@ export default function HomePage() {
         className="flex-1 p-8"
         style={{ backgroundColor: "#F9FAFB" }}
       >
-        <header className="mb-6" style={{ color: "#FFFFFF", fontSize: "14px" }}>
-          Home
-        </header>
-
         <h2 className="text-xl font-semibold mb-4" style={{ color: "#1F2937" }}>
           Pending tasks
         </h2>
 
-        <div className="flex gap-5 mb-6 flex-wrap">
-          {taskRemoved ? (
-            <PlaceholderCard />
-          ) : (
-            <Link href="/review" className="block">
-              <div
-                className="w-[300px] rounded-lg border p-5 cursor-pointer transition-opacity duration-200 hover:opacity-90"
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#E5E7EB",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
-                }}
-              >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <span style={{ color: "#FBBF24" }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/>
-                      </svg>
-                    </span>
-                    <span className="font-medium" style={{ color: "#374151", fontSize: "14px" }}>
-                      Passport verification required
-                    </span>
-                  </div>
-                  <span
-                    className="px-2 py-0.5 rounded text-xs font-medium"
-                    style={{ backgroundColor: "#FEF3C7", color: "#92400E" }}
-                  >
-                    Mismatch
-                  </span>
-                </div>
-                <p className="text-sm mb-3" style={{ color: "#374151" }}>
-                  Passport name does not match HR record
-                </p>
-                <div className="flex justify-between items-center mb-3" style={{ color: "#374151", fontSize: "14px" }}>
-                  <span className="font-medium">Passport.pdf</span>
-                  <span style={{ color: "#6B7280" }}>Uploaded 19 Feb 2026</span>
-                </div>
-                <p className="text-sm mb-4" style={{ color: "#374151" }}>
-                  Confidence: <span style={{ color: "#3B82F6" }}>75% (medium)</span>
-                </p>
-                <span
-                  className="inline-block px-6 py-2.5 rounded-md text-sm font-medium"
-                  style={{ backgroundColor: "#DBEAFE", color: "#2563EB" }}
-                >
-                  Review document
-                </span>
+        <div
+          className="mb-6 overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory"
+          style={{ width: "calc(300px * 2.5 + 20px * 2)" }}
+        >
+          <div className="flex gap-5 flex-nowrap pb-2 min-w-0">
+            {taskRemoved ? (
+              <div className="flex-shrink-0 snap-start">
+                <PlaceholderCard />
               </div>
-            </Link>
-          )}
-          <PlaceholderCard />
-          <PlaceholderCard />
-          <PlaceholderCard />
+            ) : (
+              <Link href="/review" className="block flex-shrink-0 snap-start">
+                <TaskCard />
+              </Link>
+            )}
+            <div className="flex-shrink-0 snap-start">
+              <TaskCardGreyed />
+            </div>
+            <div className="flex-shrink-0 snap-start">
+              <TaskCardGreyed />
+            </div>
+          </div>
         </div>
 
         {/* Bar chart section */}
@@ -172,6 +130,93 @@ export default function HomePage() {
         </div>
       </main>
       </div>
+    </div>
+  );
+}
+
+function TaskCard() {
+  return (
+    <div
+      className="group w-[300px] rounded-lg border p-5 cursor-pointer transition-opacity duration-200 hover:opacity-90"
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderColor: "#E5E7EB",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+      }}
+    >
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="flex items-center gap-2">
+          <img
+            src="/images/warning.svg"
+            alt=""
+            className="w-5 h-5 shrink-0"
+            aria-hidden
+            style={{ filter: "invert(48%) sepia(79%) saturate(2476%) hue-rotate(14deg)" }}
+          />
+          <span className="font-semibold" style={{ color: "#1F2937", fontSize: "14px" }}>
+            Passport verification required
+          </span>
+        </div>
+        <span
+          className="px-2 py-0.5 rounded text-xs font-medium border"
+          style={{ backgroundColor: "#FEF3C7", color: "#1F2937", borderColor: "#FCD34D" }}
+        >
+          Mismatch
+        </span>
+      </div>
+      <p className="text-sm mb-3" style={{ color: "#374151" }}>
+        Passport name does not match HR record
+      </p>
+      <div
+        className="flex justify-between items-center mb-3 px-3 py-2 rounded-md"
+        style={{ backgroundColor: "#F3F4F6", fontSize: "14px" }}
+      >
+        <span className="font-semibold" style={{ color: "#1F2937" }}>Passport.pdf</span>
+        <span style={{ color: "#6B7280" }}>Uploaded 19 Feb 2026</span>
+      </div>
+      <p className="text-sm mb-4 font-semibold" style={{ color: "#374151" }}>
+        Confidence: <span style={{ color: "#D97706" }}>75% (medium)</span>
+      </p>
+      <span
+        className="inline-block px-6 py-2.5 rounded-md text-sm font-semibold border bg-white group-hover:bg-[#EFF6FF] transition-colors duration-150"
+        style={{ color: "#1F2937", borderColor: "#2563EB" }}
+      >
+        Review document
+      </span>
+    </div>
+  );
+}
+
+function TaskCardGreyed() {
+  return (
+    <div
+      className="w-[300px] rounded-lg border p-5"
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderColor: "#E5E7EB",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+      }}
+    >
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded shrink-0" style={{ backgroundColor: "#E5E7EB" }} />
+          <div className="h-4 rounded w-40" style={{ backgroundColor: "#E5E7EB" }} />
+        </div>
+        <div className="h-5 w-14 rounded" style={{ backgroundColor: "#E5E7EB" }} />
+      </div>
+      <div className="h-4 rounded w-full mb-3" style={{ backgroundColor: "#E5E7EB" }} />
+      <div
+        className="flex justify-between items-center mb-3 px-3 py-2 rounded-md gap-2"
+        style={{ backgroundColor: "#F3F4F6" }}
+      >
+        <div className="h-4 rounded w-24" style={{ backgroundColor: "#D1D5DB" }} />
+        <div className="h-4 rounded w-28" style={{ backgroundColor: "#D1D5DB" }} />
+      </div>
+      <div className="h-4 rounded w-36 mb-4" style={{ backgroundColor: "#E5E7EB" }} />
+      <div
+        className="inline-block h-10 rounded-md w-36"
+        style={{ backgroundColor: "#E5E7EB" }}
+      />
     </div>
   );
 }

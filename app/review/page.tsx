@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useTask, type ActivityEntry } from "../context/TaskContext";
 
@@ -32,6 +32,7 @@ export default function ReviewPage() {
   } = useTask();
 
   const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showTransitionLoader, setShowTransitionLoader] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -40,6 +41,7 @@ export default function ReviewPage() {
   }, []);
 
   const handleRequestCorrection = () => {
+    setShowTransitionLoader(true);
     prependActivity({
       id: "correction-" + Date.now(),
       timestamp: "23/02/2026, 13:15",
@@ -52,12 +54,16 @@ export default function ReviewPage() {
     showToastMessage("Correction request sent to employee", "The employee will be notified to resubmit their document.");
     transitionTimeoutRef.current = setTimeout(() => {
       setTaskStatus("pending");
+      setShowTransitionLoader(false);
       transitionTimeoutRef.current = null;
     }, 800);
   };
 
   const handleOverrideConfirm = () => {
     if (!justificationText.trim()) return;
+    setOverrideModalOpen(false);
+    setJustificationText("");
+    setShowTransitionLoader(true);
     prependActivity({
       id: "override-" + Date.now(),
       timestamp: "23/02/2026, 13:15",
@@ -67,12 +73,11 @@ export default function ReviewPage() {
       source: "Admin user",
       justification: justificationText.trim(),
     });
-    setOverrideModalOpen(false);
-    setJustificationText("");
     setTaskStatus("approved_transition");
     showToastMessage("Document approved", "The document has been approved and the employee record updated.");
     transitionTimeoutRef.current = setTimeout(() => {
       setTaskStatus("completed");
+      setShowTransitionLoader(false);
       transitionTimeoutRef.current = null;
     }, 800);
   };
@@ -137,7 +142,8 @@ export default function ReviewPage() {
                     className="inline-flex items-center gap-1 mb-2 text-sm"
                     style={{ color: "#6B7280" }}
                   >
-                    <span>←</span> Back
+                    <img src="/images/arrow%20left.svg" alt="" className="w-4 h-4 shrink-0" aria-hidden />
+                    Back
                   </Link>
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
@@ -149,17 +155,14 @@ export default function ReviewPage() {
                       </p>
                     </div>
                     <span
-                      className="px-3 py-1.5 rounded text-xs font-semibold shrink-0"
+                      className="px-3 py-1.5 rounded text-xs font-semibold shrink-0 inline-flex items-center gap-1"
                       style={{
                         backgroundColor: badgeLabel === "PENDING REVIEW" ? "#D8D8DA" : badgeLabel === "PENDING" ? "#F3F4F6" : "#22C55E",
                         color: badgeLabel === "APPROVED" ? "#FFFFFF" : "#1F2937",
                       }}
                     >
                       {badgeLabel === "APPROVED" && (
-                        <span className="inline-flex items-center gap-1">
-                          <span className="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center">✓</span>
-                          {" "}
-                        </span>
+                        <img src="/images/tick.svg" alt="" className="w-4 h-4 shrink-0" aria-hidden />
                       )}
                       {badgeLabel}
                     </span>
@@ -171,11 +174,7 @@ export default function ReviewPage() {
                         className="rounded-md border p-3 mb-4 flex items-center gap-2"
                         style={{ backgroundColor: "#FFFBEB", borderColor: "#FBBF24" }}
                       >
-                        <span style={{ color: "#F59E0B" }}>
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/>
-                          </svg>
-                        </span>
+                        <img src="/images/warning.svg" alt="" className="w-5 h-5 shrink-0" aria-hidden />
                         <span style={{ color: "#1F2937" }}>
                           Name does not match HR record. Requires verification
                         </span>
@@ -186,13 +185,12 @@ export default function ReviewPage() {
                         style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB" }}
                       >
                         <div className="flex gap-4">
-                          <div
-                            className="w-40 h-28 rounded overflow-hidden shrink-0"
-                            style={{ backgroundColor: "#D1D5DB" }}
-                          >
-                            <div className="w-full h-full flex items-center justify-center text-xs" style={{ color: "#6B7280" }}>
-                              Passport
-                            </div>
+                          <div className="w-40 h-28 rounded overflow-hidden shrink-0 bg-[#D1D5DB]">
+                            <img
+                              src="/images/passport.jpg?v=2"
+                              alt="Passport document"
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
@@ -212,15 +210,17 @@ export default function ReviewPage() {
                             <p className="text-xs mb-2" style={{ color: "#6B7280" }}>File size: 2.4 MB</p>
                             <div className="flex gap-2">
                               <button
-                                className="px-3 py-1.5 rounded border text-sm"
+                                className="px-3 py-1.5 rounded border text-sm inline-flex items-center gap-1.5"
                                 style={{ backgroundColor: "#F3F4F6", borderColor: "#D1D5DB", color: "#374151" }}
                               >
+                                <img src="/images/download.svg" alt="" className="w-4 h-4" aria-hidden />
                                 Download
                               </button>
                               <button
-                                className="px-3 py-1.5 rounded border text-sm"
+                                className="px-3 py-1.5 rounded border text-sm inline-flex items-center gap-1.5"
                                 style={{ backgroundColor: "#F3F4F6", borderColor: "#D1D5DB", color: "#374151" }}
                               >
+                                <img src="/images/full%20view.svg" alt="" className="w-4 h-4" aria-hidden />
                                 Full view
                               </button>
                             </div>
@@ -296,6 +296,25 @@ export default function ReviewPage() {
         </div>
       </div>
 
+      {showTransitionLoader && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          style={{
+            backgroundColor: "rgba(0,0,0,0.4)",
+            animation: "fadeIn 200ms ease-out",
+          }}
+        >
+          <div
+            className="w-12 h-12 rounded-full border-4 border-t-transparent"
+            style={{
+              borderColor: "#1070B7",
+              borderTopColor: "transparent",
+              animation: "spin 0.8s linear infinite",
+            }}
+          />
+        </div>
+      )}
+
       {overrideModalOpen && (
         <OverrideModal
           justificationText={justificationText}
@@ -322,7 +341,8 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
     <>
       <div className="flex-1 p-6">
         <Link href="/" className="inline-flex items-center gap-1 mb-2 text-sm" style={{ color: "#6B7280" }}>
-          <span>←</span> Back
+          <img src="/images/arrow%20left.svg" alt="" className="w-4 h-4 shrink-0" aria-hidden />
+          Back
         </Link>
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
@@ -343,7 +363,7 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
 
         <div className="flex flex-col items-center py-12 text-center max-w-lg mx-auto">
           <div className="mb-4" style={{ color: "#1070B7" }}>
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
             </svg>
           </div>
@@ -367,14 +387,15 @@ function TaskPendingContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: () =
           style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
         >
           <div className="flex gap-4">
-            <div className="w-40 h-28 rounded overflow-hidden shrink-0" style={{ backgroundColor: "#D1D5DB" }}>
-              <div className="w-full h-full flex items-center justify-center text-xs" style={{ color: "#6B7280" }}>Passport</div>
+            <div className="w-40 h-28 rounded overflow-hidden shrink-0 bg-[#D1D5DB]">
+              <img src="/images/passport.jpg?v=2" alt="Passport document" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-semibold" style={{ color: "#1F2937" }}>Passport.pdf</span>
                 <span className="px-2 py-0.5 rounded text-xs flex items-center gap-1" style={{ backgroundColor: "#F3F4F6", color: "#6B7280" }}>
-                  <span>🕐</span> PENDING
+                  <img src="/images/clock.svg" alt="" className="w-3.5 h-3.5" aria-hidden />
+                  PENDING
                 </span>
               </div>
               <p className="text-sm mb-1" style={{ color: "#1F2937" }}>Confidence: 75% (medium)</p>
@@ -396,7 +417,8 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
     <>
       <div className="flex-1 p-6">
         <Link href="/" className="inline-flex items-center gap-1 mb-2 text-sm" style={{ color: "#6B7280" }}>
-          <span>←</span> Back
+          <img src="/images/arrow%20left.svg" alt="" className="w-4 h-4 shrink-0" aria-hidden />
+          Back
         </Link>
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
@@ -411,16 +433,14 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
             className="px-3 py-1.5 rounded text-xs font-semibold shrink-0 inline-flex items-center gap-1"
             style={{ backgroundColor: "#22C55E", color: "#FFFFFF" }}
           >
-            <span className="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px]">✓</span>
+            <img src="/images/tick.svg" alt="" className="w-4 h-4 shrink-0" aria-hidden />
             APPROVED
           </span>
         </div>
 
         <div className="flex flex-col items-center py-12 text-center max-w-lg mx-auto">
-          <div className="mb-4" style={{ color: "#3B82F6" }}>
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M5 15l4 4 10-10" />
-            </svg>
+          <div className="mb-4 w-20 h-20 flex items-center justify-center">
+            <img src="/images/tick.svg" alt="" className="w-full h-full object-contain" aria-hidden />
           </div>
           <h2 className="text-2xl font-bold mb-2" style={{ color: "#333333" }}>
             Document approved
@@ -445,14 +465,15 @@ function TaskCompletedContent({ onReturnToTaskQueue }: { onReturnToTaskQueue: ()
           style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}
         >
           <div className="flex gap-4">
-            <div className="w-40 h-28 rounded overflow-hidden shrink-0" style={{ backgroundColor: "#D1D5DB" }}>
-              <div className="w-full h-full flex items-center justify-center text-xs" style={{ color: "#6B7280" }}>Passport</div>
+            <div className="w-40 h-28 rounded overflow-hidden shrink-0 bg-[#D1D5DB]">
+              <img src="/images/passport.jpg?v=2" alt="Passport document" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-semibold" style={{ color: "#333333" }}>Passport.pdf</span>
                 <span className="px-2 py-0.5 rounded text-xs inline-flex items-center gap-1" style={{ backgroundColor: "#22C55E", color: "#FFFFFF" }}>
-                  ✓ APPROVED
+                  <img src="/images/tick.svg" alt="" className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                  APPROVED
                 </span>
               </div>
               <p className="text-sm mb-1" style={{ color: "#333333" }}>Resolution: Approved. Verified against HR record</p>
@@ -474,10 +495,10 @@ function ActivityLogSidebar({ activityLog, badgeLabel }: { activityLog: Activity
   return (
     <aside
       className="w-80 shrink-0 p-6 border-l"
-      style={{ backgroundColor: "#2C2C2E", borderColor: "#374151" }}
+      style={{ backgroundColor: "#FFFFFF", borderColor: "#E5E7EB" }}
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold" style={{ color: "#FFFFFF", fontSize: "18px" }}>
+        <h3 className="font-semibold" style={{ color: "#1F2937", fontSize: "18px" }}>
           Activity log
         </h3>
         {(badgeLabel === "PENDING REVIEW" || badgeLabel === "PENDING") && (
@@ -492,19 +513,24 @@ function ActivityLogSidebar({ activityLog, badgeLabel }: { activityLog: Activity
       <ul className="space-y-4">
         {activityLog.map((entry) => (
           <li key={entry.id} className="text-sm">
-            <p className="mb-1" style={{ color: "#9CA3AF", fontSize: "12px" }}>{entry.timestamp}</p>
+            <p className="mb-1" style={{ color: "#6B7280", fontSize: "12px" }}>{entry.timestamp}</p>
             <div className="flex gap-2">
               <span>{getActivityIcon(entry.type)}</span>
               <div>
-                <p className="font-semibold mb-0.5" style={{ color: "#FFFFFF" }}>{entry.title}</p>
-                <p className="text-sm mb-1" style={{ color: "#9CA3AF" }}>{entry.description}</p>
+                <p className="font-semibold mb-0.5" style={{ color: "#1F2937" }}>{entry.title}</p>
+                <p className="text-sm mb-1" style={{ color: "#6B7280" }}>{entry.description}</p>
                 <span
-                  className="inline-block px-2 py-1 rounded text-xs"
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs"
                   style={{
                     backgroundColor: entry.source === "Admin user" ? "#E5E7EB" : "#E0F2FE",
                     color: entry.source === "Admin user" ? "#6B7280" : "#3B82F6",
                   }}
                 >
+                  {entry.source === "Admin user" ? (
+                    <img src="/images/admin.svg" alt="" className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                  ) : (
+                    <img src="/images/system.svg" alt="" className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                  )}
                   {entry.source}
                 </span>
               </div>
@@ -517,30 +543,44 @@ function ActivityLogSidebar({ activityLog, badgeLabel }: { activityLog: Activity
 }
 
 function getActivityIcon(type: ActivityEntry["type"]) {
-  const base = "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs shrink-0";
+  const iconClass = "w-6 h-6 shrink-0 rounded-full flex items-center justify-center p-1";
   switch (type) {
     case "correction_requested":
       return (
-        <span className={base} style={{ backgroundColor: "#DC2626" }}>✕</span>
+        <span className={iconClass} style={{ backgroundColor: "#DC2626" }}>
+          <img src="/images/error.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
       );
     case "name_mismatch":
       return (
-        <span className={base} style={{ backgroundColor: "#F97316" }}>!</span>
+        <span className={iconClass} style={{ backgroundColor: "#F97316" }}>
+          <img src="/images/warning.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
       );
     case "automated_verification":
       return (
-        <span className={base} style={{ backgroundColor: "#8B5CF6" }}>🕐</span>
+        <span className={iconClass} style={{ backgroundColor: "#8B5CF6" }}>
+          <img src="/images/clock.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
       );
     case "document_uploaded":
       return (
-        <span className={base} style={{ backgroundColor: "#6B7280" }}>↑</span>
+        <span className={iconClass} style={{ backgroundColor: "#6B7280" }}>
+          <img src="/images/upload.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
       );
     case "document_approved_override":
       return (
-        <span className={base} style={{ backgroundColor: "#22C55E" }}>✓</span>
+        <span className={iconClass} style={{ backgroundColor: "#22C55E" }}>
+          <img src="/images/tick.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
       );
     default:
-      return <span className={base} style={{ backgroundColor: "#6B7280" }}>•</span>;
+      return (
+        <span className={iconClass} style={{ backgroundColor: "#6B7280" }}>
+          <img src="/images/clock.svg" alt="" className="w-4 h-4" aria-hidden />
+        </span>
+      );
   }
 }
 
@@ -629,10 +669,10 @@ function Toast({
       }}
     >
       <span
-        className="w-8 h-8 rounded-full flex items-center justify-center text-white shrink-0"
+        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
         style={{ backgroundColor: "#22C55E" }}
       >
-        ✓
+        <img src="/images/tick.svg" alt="" className="w-5 h-5" aria-hidden />
       </span>
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-sm" style={{ color: isGreen ? "#065F46" : "#333333" }}>{message}</p>
@@ -640,11 +680,11 @@ function Toast({
       </div>
       <button
         onClick={onDismiss}
-        className="shrink-0 p-1"
+        className="shrink-0 p-1 flex items-center justify-center"
         style={{ color: "#6B7280" }}
         aria-label="Close"
       >
-        ✕
+        <img src="/images/error.svg" alt="" className="w-4 h-4" aria-hidden />
       </button>
     </div>
   );
